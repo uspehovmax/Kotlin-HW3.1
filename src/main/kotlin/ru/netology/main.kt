@@ -2,8 +2,8 @@ package ru.netology
 
 const val minute = 60
 const val hour = 60 * minute
+const val day = 24 * hour
 var message = ""
-
 
 fun main() {
     val timesArray = arrayOf(
@@ -16,7 +16,7 @@ fun main() {
         3 * hour,
         35 * hour,
         54 * hour,
-        85 * hour
+        5 * day
     )
     var i = 0
     while (i < timesArray.size) {
@@ -27,14 +27,14 @@ fun main() {
 }
 
 fun timeCalculate(currentSeconds: Int): String {
-    when (true/* */) {
-        (currentSeconds / minute < 1) -> message = "только что"
+    message = when (currentSeconds > 0) {
+        (currentSeconds / minute < 1) -> "только что"
         (currentSeconds / hour < 1 && currentSeconds / minute >= 1) -> howManyMinutes(currentSeconds)
         (currentSeconds / hour in 1..23) -> howManyHours(currentSeconds)
-        (currentSeconds / hour in 24..47) -> message = "сегодня"
-        (currentSeconds / hour in 48..71) -> message = "вчера"
+        (currentSeconds / hour in 24..47) -> "сегодня"
+        (currentSeconds / hour in 48..71) -> "вчера"
         else -> {
-            message = "давно"
+            "давно"
         }
     }
     return message
@@ -42,12 +42,12 @@ fun timeCalculate(currentSeconds: Int): String {
 
 fun howManyMinutes(currentSeconds: Int): String {
     val value = (currentSeconds / minute).toInt()
-    when (true/* */) {
-        (value % 10) == 1 && value != 11 -> message = "$value минуту"
+    message = when (value >= 1) {
+        (value % 10) == 1 && value != 11 -> "$value минуту"
         (value % 10 == 2 && value != 12 || value % 10 == 3 && value != 13 || value % 10 == 4 && value != 14)
-        -> message = "$value минуты"
+        -> "$value минуты"
         else -> {
-            message = "$value минут"
+            "$value минут"
         }
     }
     message += " назад"
@@ -56,11 +56,11 @@ fun howManyMinutes(currentSeconds: Int): String {
 
 fun howManyHours(currentSeconds: Int): String {
     val value = (currentSeconds / hour).toInt()
-    when (true /**/) {
-        (value == 1 || value == 21) -> message = "$value час"
-        (value == 2 || value == 3 || value == 4 || value == 22 || value == 23) -> message = "$value часа"
+    message = when (value >= 1) {
+        (value == 1 || value == 21) -> "$value час"
+        (value == 2 || value == 3 || value == 4 || value == 22 || value == 23) -> "$value часа"
         else -> {
-            message = "$value часов"
+            "$value часов"
         }
     }
     message += " назад"
